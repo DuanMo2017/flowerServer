@@ -10,6 +10,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.io.*;
@@ -17,8 +18,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-
-public class tranlateService {
+@Service
+public class TranlateService {
 //    private static Logger logger = LoggerFactory.getLogger(translateTest.class);
 
     private static final String YOUDAO_URL = "https://openapi.youdao.com/api";
@@ -30,7 +31,7 @@ public class tranlateService {
     public String getChineseName(String englishName) throws IOException {
 
         Map<String, String> params = new HashMap<>();
-        String q = "rose";
+        String q = englishName;
         String salt = String.valueOf(System.currentTimeMillis());
         params.put("from", "en");
         params.put("to", "zh-CHS");

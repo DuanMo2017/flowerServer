@@ -1,5 +1,8 @@
 package com.flower.demo.controller;
 
+import com.flower.demo.service.DiscriminateService;
+import org.omg.SendingContext.RunTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,37 +18,24 @@ import java.util.Map;
 
 @RestController
 public class HelloWorldController {
+    @Autowired
+    DiscriminateService discriminateService;
+
     @RequestMapping("/hello")
     private String HelloWorld(){
         return "hello";
     }
 
     @PostMapping("/uploadPicture")
-    public void uploadPicture(@RequestParam("file") MultipartFile file){
-        try {
-            String filePath = "/Volumes/E/WeChatProjects/Picture";
-            String fileName = "targetPicture.jpg";
-            file.transferTo(new File(filePath +File.separator+ fileName));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @PostMapping("/discriminate")
-    public Map<String,String> discriminate(){
+    public Map<String,String> uploadPicture(@RequestParam("file") MultipartFile file){
         Map<String,String> resultMap = new HashMap<>();
-        String cmd = "ping www.baidu.com";
         try {
-            Process process = Runtime.getRuntime().exec(cmd);
-            InputStream inputStream = process.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream,"GBK");
-            BufferedReader br = new BufferedReader(reader);
-            String content = br.readLine();
-            while (content != null){
-                System.out.println(content);
-                content = br.readLine();
-            }
+            //C:\Users\Administrator\Desktop\timg111.jpg
+            String filePath = "C:\\Users\\Administrator\\Desktop";
+            String fileName = "timg111.jpg";
+            file.transferTo(new File(filePath +File.separator+ fileName));
             resultMap.put("result","success");
+            resultMap.put("flowerName",discriminateService.discriminate());
         }catch (Exception e){
             e.printStackTrace();
             resultMap.put("result","fail");
@@ -53,4 +43,5 @@ public class HelloWorldController {
         }
         return resultMap;
     }
+
 }
